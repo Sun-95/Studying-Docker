@@ -22,7 +22,7 @@ If this is the first time you are pushing an image, the client will ask you to l
 
 <h1>Multi-container Environments</h1>
 <h2>SF Food Trucks</h2>
-
+First up, let's clone the repository locally. <a href="screenshots/21.png">Screenshot 21</a> 
 
 
 
