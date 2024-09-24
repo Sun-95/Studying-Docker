@@ -20,8 +20,8 @@ Now that we have our Dockerfile, we can build our image. The docker build comman
 <h2>Docker push</h2>
 If this is the first time you are pushing an image, the client will ask you to login. Provide the same credentials that you used for logging into Docker Hub. <a href="screenshots/19.png">Screenshot 19</a> To publish, just type the below command remembering to replace the name of the image tag above with yours. It is important to have the format of yourusername/image_name so that the client knows where to publish. <a href="screenshots/20.png">Screenshot 20</a> 
 
-
-
+<h1>Multi-container Environments</h1>
+<h2>SF Food Trucks</h2>
 
 
 
