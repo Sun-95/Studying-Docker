@@ -21,8 +21,33 @@ Now that we have our Dockerfile, we can build our image. The docker build comman
 If this is the first time you are pushing an image, the client will ask you to login. Provide the same credentials that you used for logging into Docker Hub. <a href="screenshots/19.png">Screenshot 19</a> To publish, just type the below command remembering to replace the name of the image tag above with yours. It is important to have the format of yourusername/image_name so that the client knows where to publish. <a href="screenshots/20.png">Screenshot 20</a> 
 
 <h1>Multi-container Environments</h1>
-<h2>SF Food Trucks</h2>
-First up, let's clone the repository locally. <a href="screenshots/21.png">Screenshot 21</a> 
+<h2>Food Trucks</h2>
+First up, let's clone the repository locally. <a href="screenshots/21.png">Screenshot 21</a> Let's think of how we can Dockerize the app. We can see that the application consists of a Flask backend server and an Elasticsearch service. A natural way to split this app would be to have two containers - one running the Flask process and another running the Elasticsearch (ES) process. That way if our app becomes popular, we can scale it by adding more containers depending on where the bottleneck lies. So we need two containers. We've already built our own Flask container in the previous section. And for Elasticsearch, let's see if we can find something on the hub. <a href="screenshots/22.png">Screenshot 22</a> Quite unsurprisingly, there exists an officially supported image for Elasticsearch. To get ES running, we can simply use docker run and have a single-node ES container running locally within no time. Let's first pull the image <a href="screenshots/23.png">Screenshot 23</a> and then run it in development mode by specifying ports and setting an environment variable that configures the Elasticsearch cluster to run as a single-node. <a href="screenshots/24.png">Screenshot 24</a> As seen above, we use --name es to give our container a name which makes it easy to use in subsequent commands. Once the container is started, we can see the logs by running docker container logs with the container name to inspect the logs. You should see logs similar to below if Elasticsearch started successfully. <a href="screenshots/25.1.png">Screenshot 25.1</a> <a href="screenshots/25.2.png">Screenshot 25.2</a>
+Finally, we can go ahead, build the image and run the container <a href="screenshots/26.png">Screenshot 26</a> In the first run, this will take some time as the Docker client will download the ubuntu image, run all the commands and prepare your image. Re-running docker build after any subsequent changes you make to the application code will almost be instantaneous. Now let's try running our app. <a href="screenshots/27.png">Screenshot 27</a> Oops! Our flask app was unable to run since it was unable to connect to Elasticsearch.
+<h2>Docker Network</h2>
+Okay, so let's run docker container ls and see what we have. <a href="screenshots/28.png">Screenshot 28</a> Now is a good time to start our exploration of networking in Docker. When docker is installed, it creates three networks automatically. <a href="screenshots/29.png">Screenshot 29</a> The bridge network is the network in which containers are run by default. So that means that when I ran the ES container, it was running in this bridge network. To validate this, let's inspect the network. <a href="screenshots/30.png">Screenshot 30</a> Let's first go ahead and create our own network. <a href="screenshots/31.png">Screenshot 31</a> The network create command creates a new bridge network, which is what we need at the moment. In terms of Docker, a bridge network uses a software bridge which allows containers connected to the same bridge network to communicate, while providing isolation from containers which are not connected to that bridge network. The Docker bridge driver automatically installs rules in the host machine so that containers on different bridge networks cannot communicate directly with each other. Now that we have a network, we can launch our containers inside this network using the --net flag. Let's do that - but first, in order to launch a new container with the same name, we will stop and remove our ES container that is running in the bridge network. <a href="screenshots/32.png">Screenshot 32</a> Let's launch our Flask container for real now <a href="screenshots/33.png">Screenshot 33</a> 
+<h2>Docker Compose</h2>
+The first step is to install Docker Compose. If you're running Windows or Mac, Docker Compose is already installed as it comes in the Docker Toolbox. Since Compose is written in Python, you can also simply do pip install docker-compose. Test your installation with <a href="screenshots/34.png">Screenshot 34</a> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
